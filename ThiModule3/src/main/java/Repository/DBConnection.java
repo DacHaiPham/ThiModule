@@ -5,21 +5,18 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-    private static String jdbcURL = "jdbc:mysql://localhost:3306/productdb";
-    private static String jdbcUsername = "root";
-    private static String jdbcPassword = "admin4320";
+    private static String URL = "jdbc:mysql://localhost:3306/productdb";
+    private static String Username = "root";
+    private static String Password = "admin4320";
 
-    static final String INSERT_PRODUCT_SQL = "INSERT INTO products (name, price, quantity, color, description, category) VALUES (?, ?, ?, ?, ?, ?)";
-    static final String SELECT_ALL_PRODUCTS = "SELECT * FROM products";
 
-    protected static Connection getConnection() {
-        Connection connection = null;
+    public static Connection getConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
-        } catch (SQLException | ClassNotFoundException e) {
+            return DriverManager.getConnection(URL, Username, Password);
+        } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException("Lỗi kết nối CSDL");
         }
-        return connection;
     }
 }
