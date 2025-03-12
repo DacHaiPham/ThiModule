@@ -1,53 +1,109 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: DacHaiPham
-  Date: 3/11/2025
-  Time: 8:03 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.util.List, Model.Product" %>
+<%@ page import="java.util.List, java.text.DecimalFormat, Model.Product" %>
 <html>
 <head>
     <title>Management Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            <% String successMessage = (String) session.getAttribute("successMessage");
+               if (successMessage != null) { %>
+            alert("<%= successMessage %>");
+            <% session.removeAttribute("successMessage"); %>
+            <% } %>
+        };
+    </script>
 </head>
 <body>
-<h2>Management Product</h2>
-<form action="products" method="GET">
-    <button type="submit" name="action" value="add">Add New Product</button>
-</form>
+<div class="container">
+    <h2>Management Product</h2>
+    <form action="products" method="GET">
+        <button type="submit" name="action" value="add">Add New Product</button>
+    </form>
 
-<table border="1">
-    <thead>
-    <tr>
-        <th>STT</th>
-        <th>Product Name</th>
-        <th>Price</th>
-        <th>Quantity</th>
-        <th>Color</th>
-        <th>Category</th>
-    </tr>
-    </thead>
-    <tbody>
-    <%
-        List<Product> productList = (List<Product>) request.getAttribute("products");
-        if (productList != null) {
-            int index = 1;
-            for (Product product : productList) {
-    %>
-    <tr>
-        <td><%= index++ %></td>
-        <td><%= product.getName() %></td>
-        <td><%= product.getPrice() %></td>
-        <td><%= product.getQuantity() %></td>
-        <td><%= product.getColor() %></td>
-        <td><%= product.getCategory() %></td>
-    </tr>
-    <%
+    <table>
+        <thead>
+        <tr>
+            <th>STT</th>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Color</th>
+            <th>Category</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <%
+            List<Product> productList = (List<Product>) request.getAttribute("products");
+            DecimalFormat df = new DecimalFormat("#,### VND");
+            if (productList != null) {
+                int index = 1;
+                for (Product product : productList) {
+        %>
+        <tr>
+            <td><%= index++ %></td>
+            <td><%= product.getName() %></td>
+            <td><%= df.format(product.getPrice()) %></td>
+            <td><%= product.getQuantity() %></td>
+            <td><%= product.getColor() %></td>
+            <td><%= product.getCategory() %></td>
+            <td><%= product.getDescription() %></td>
+        </tr>
+        <%
+                }
             }
-        }
-    %>
-    </tbody>
-</table>
+        %>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

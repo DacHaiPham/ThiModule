@@ -8,12 +8,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@WebServlet(name = "ProductServlet", urlPatterns = "/products")
+@WebServlet({"/products","/"})
 public class ProductServlet extends HttpServlet {
     private ProductService productService = new ProductService();
 
@@ -42,7 +43,11 @@ public class ProductServlet extends HttpServlet {
         Product newProduct = new Product(0, name, price, quantity, color, description, category);
         productService.addProduct(newProduct);
 
-        // Chuyển hướng về danh sách sản phẩm sau khi thêm thành công
+        // Lưu thông báo thành công vào session
+        HttpSession session = request.getSession();
+        session.setAttribute("successMessage", "Add Product thành công!");
+
+        // Chuyển hướng lại trang danh sách
         response.sendRedirect("products");
     }
 }
